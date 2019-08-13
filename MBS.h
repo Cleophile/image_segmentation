@@ -36,8 +36,8 @@ public:
 	cv::Mat GetSeeds();
 	cv::Mat GetSuperpixelElements();
 	
-	cv::Mat Visualization();
-	cv::Mat Visualization(cv::Mat& image);
+	// cv::Mat Visualization();
+	// cv::Mat Visualization(cv::Mat& image);
 
 private:
 	void DistanceTransform_MBD(cv::Mat& image, float* seedsX, float* seedsY, 
