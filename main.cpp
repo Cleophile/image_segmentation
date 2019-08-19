@@ -3,6 +3,8 @@
 #include <iostream>
 #include <string>
 #include <cstdlib>
+#include <fstream>
+#include <iomanip>
 #include "MBS.h"
 
 // #define DEBUG_YL
@@ -12,14 +14,22 @@ int main(int argc, char** argv)
     std::cout << "Time count start at reading" << std::endl;
     start = clock();
     // cv::Mat img = cv::imread("/home/graviti/下载/bear.jpg");
-    cv::Mat img = cv::imread(argv[1]);
+    cv::Mat image = cv::imread(argv[1]);
+    cv::Mat img = image;
+    // cv::fastNlMeansDenoisingColored(image,img);
+    // cv::Mat kernel = (cv::Mat_<char>(3,3) << 0, -1 ,0,
+    //                                        -1, 5, -1,
+    //                                       0, -1, 0);
+
+    // cv::filter2D(image,img,image.depth(),kernel);
+    
     if(img.empty())
     {
         std::cout << "Image not found, aborting program." << std::endl;
         return -1;
     }
-    double spSize = 300; // 越小越密集
-    double alpha = 0.1; // 越大越规则
+    double spSize = 400; // 越小越密集
+    double alpha = 0.03; // 越大越规则
     // 时间没有明显增加
 
     MBS mbs;
@@ -59,28 +69,33 @@ int main(int argc, char** argv)
     long bp = std::distance(std::begin(b_hist), smallest) * 10 + 5;
 
     cv::Mat aftermath = img.clone();
+    std::ofstream out_file;
+    out_file.open(argv[3]);
+
     for (int i=1; i<img.rows-1; i++)
     {
         for (int j=1; j<img.cols-1; j++)
         {
+            out_file << labels.at<int>(i,j) << " ";
             if(labels.at<int>(i,j)!= labels.at<int>(i,j-1) || labels.at<int>(i,j)!= labels.at<int>(i-1,j) || labels.at<int>(i,j)!= labels.at<int>(i+1,j) || labels.at<int>(i,j)!= labels.at<int>(i,j+1))
 
             {
                 // is boundry
-                aftermath.at<cv::Vec3b>(i,j)[0] = rp;
-                aftermath.at<cv::Vec3b>(i,j)[1] = gp;
-                aftermath.at<cv::Vec3b>(i,j)[2] = bp;
+                aftermath.at<cv::Vec3b>(i,j)[0] = rp; // 255 - img.at<cv::Vec3b>(i,j)[0];
+                aftermath.at<cv::Vec3b>(i,j)[1] = gp; // 255 - img.at<cv::Vec3b>(i,j)[1];
+                aftermath.at<cv::Vec3b>(i,j)[2] = bp; // 255 - img.at<cv::Vec3b>(i,j)[2];
             }
         }
+        out_file << std::endl;
     }
     // std::cout << labels << std::endl;
     std::stringstream ss;
-    ss << "/home/graviti/下载/scalp_results/";
-    if(argc>2)
-        ss << argv[2];
-    else
-        ss << "scalp_result";
-    ss << ".png";
+    // ss << "/home/graviti/下载/scalp_results/";
+    // if(argc>2)
+    ss << argv[2];
+    // else
+    //  ss << "scalp_result";
+    // ss << ".png";
     std::string filename = ss.str();
     cv::imwrite(filename, aftermath);
     end = clock();
