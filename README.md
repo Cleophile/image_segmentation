@@ -4,5 +4,5 @@
 `cd build`  
 `cmake ..`  
 `make -j`  
-`spix <image_path> <target_image_path> <target_file_path>`  
+`spix <image_path>  <target_file_path> <target_image_path>`  
 
