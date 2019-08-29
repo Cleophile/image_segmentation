@@ -97,15 +97,19 @@ int main(int argc, char** argv)
     }
     else
     {
+        out_file << "[";
         for (int i=1; i<img.rows-1; i++)
         {
-            for (int j=1; j<img.cols-1; j++)
+            out_file << "[";
+            for (int j=1; j<img.cols-2; j++)
             {
-                out_file << labels.at<int>(i,j) << " "; // NOTICE!
+                out_file << labels.at<int>(i,j) << ", "; // NOTICE!
             }
-            out_file << std::endl;
+            out_file << labels.at<int>(i,img.cols-1) << "]," <<std::endl;
         }
+        out_file << "]";
     }
+    out_file.close();
 
     end = clock();
     double endtime=(double)(end-start)/CLOCKS_PER_SEC;
