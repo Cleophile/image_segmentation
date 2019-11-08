@@ -1,9 +1,7 @@
-// [10/26/2017 Yinlin]
-// Implementation of "Minimum Barrier Superpixel Segmentation"
-// huyinlin@gmail.com
+// tm.wang@graviti.cn
+// MBS Algorithm
 
-#ifndef _MBS_H_
-#define _MBS_H_
+#pragma once
 
 #include "opencv2/opencv.hpp"
 
@@ -22,17 +20,17 @@ public:
 	void SetAlpha(double alpha);
 	
 	// set the average size of superpixels
-	void SetSuperpixelSize(int spSize);
+	void SetSuperpixelSize(int32_t spSize);
 
 	/************************************************************************/
 	/* do the over-segmentation                                             */
 	/************************************************************************/
-	int SuperpixelSegmentation(cv::Mat& image);
+	int32_t SuperpixelSegmentation(cv::Mat& image);
 
 	/************************************************************************/
 	/* utility functions                                                    */
 	/************************************************************************/
-	int* GetSuperpixelLabels();
+	int32_t* GetSuperpixelLabels();
 	cv::Mat GetSeeds();
 	cv::Mat GetSuperpixelElements();
 	
@@ -41,21 +39,19 @@ public:
 
 private:
 	void DistanceTransform_MBD(cv::Mat& image, float* seedsX, float* seedsY, 
-		int cnt, int* labels, float* dmap, float factor, int iter = 4);
-	int FastMBD(cv::Mat& img, int* labels, int spSize, int outIter, int inIter, 
-		float alpha, float* seedsX, float* seedsY, int cnt);
-	void MergeComponents(int* ioLabels, int w, int h);
+		int32_t cnt, int32_t* labels, float* dmap, float factor, int32_t iter = 4);
+	int32_t FastMBD(cv::Mat& img, int32_t* labels, int32_t spSize, int32_t outIter, int32_t inIter, 
+		float alpha, float* seedsX, float* seedsY, int32_t cnt);
+	void MergeComponents(int32_t* ioLabels, int32_t w, int32_t h);
 	double _alpha;
-	int _spSize;
+	int32_t _spSize;
 
-	int* _labels;
+	int32_t* _labels;
 
 	cv::Mat _seeds;
 
-	int _imgWidth;
-	int _imgHeight;
-	int _spCnt;
+	int32_t _imgWidth;
+	int32_t _imgHeight;
+	int32_t _spCnt;
 
 };
-
-#endif // _MBS_H_
