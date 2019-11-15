@@ -40,6 +40,7 @@ int main(int argc, char** argv)
     cv::Mat label(img.rows,img.cols,CV_32SC1,mbs.get_superpixel_labels());
 
     SuperpixelParser parser;
+    parser.set_total_superpixels(spCnt);
     AdjacentTable table;
     std::vector<Polygon> polygons;
     auto p = parser.generate_all_polygons(label);
