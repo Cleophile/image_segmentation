@@ -15,11 +15,14 @@ LINK_DIRECTORIES(
 	)
 
 FIND_PACKAGE(OpenCV 4.1.1 REQUIRED)
+FIND_PACKAGE(gflags REQUIRED)
+FIND_PACKAGE(glog REQUIRED)
 
 ADD_EXECUTABLE(
 	${PROJ_NAME}
-	main.cpp
-	MBS.cpp
+	main.cc
+	MBS.cc
+	superpixel_parser.cc
 	)
 
 TARGET_LINK_LIBRARIES(${PROJ_NAME}
@@ -27,5 +30,8 @@ TARGET_LINK_LIBRARIES(${PROJ_NAME}
 	optimized libopencv_core.4.1.1.dylib
 	optimized libopencv_highgui.4.1.1.dylib
 	optimized libopencv_imgcodecs.4.1.1.dylib
+	optimized libgflags.2.2.2.dylib
+	optimized libjsoncpp.1.9.0.dylib
+	optimized libglog.0.4.0.dylib
 	)
 
